@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Bot, Github, Twitter, Disc as Discord, Mail } from 'lucide-react';
+import { Bot, Github, Disc as Discord, Mail, Instagram, Globe, Code } from 'lucide-react';
 
 const Footer = () => {
   const [ref, inView] = useInView({
@@ -51,6 +51,14 @@ const Footer = () => {
       },
     },
   };
+  
+  const socialLinks = [
+    { icon: Discord, href: "https://discord.gg/wCK5dVSY2n", label: "Discord" },
+    { icon: Github, href: "https://github.com/kynuxdev", label: "GitHub" },
+    { icon: Code, href: "https://github.com/KynuxDev/NexusUI-WebSite", label: "NexusUI Kaynak Kodu" },
+    { icon: Instagram, href: "https://instagram.com/kynux_dev", label: "Instagram" },
+    { icon: Globe, href: "https://kynux.cloud", label: "Geliştirici Sitesi" },
+  ];
 
   return (
     <footer ref={ref} className="relative py-16 overflow-hidden">
@@ -97,47 +105,53 @@ const Footer = () => {
               className="text-gray-400 mb-6 max-w-md"
               variants={itemVariants}
             >
-              Enhance your Discord server with powerful moderation tools, music playback, and fun commands.
-              Join thousands of servers already using our bot!
+              Güçlü moderasyon araçları, müzik oynatma ve eğlenceli komutlarla Discord sunucunuzu geliştirin.
+              Botumuzun kullanıldığı binlerce sunucuya katılın!
             </motion.p>
             <motion.div 
-              className="flex space-x-6"
+              className="flex flex-wrap gap-4"
               variants={itemVariants}
             >
-              {[
-                { icon: Discord, href: "#" },
-                { icon: Twitter, href: "#" },
-                { icon: Github, href: "#" },
-              ].map((social, index) => (
+              {socialLinks.slice(0, 3).map((social, index) => (
                 <motion.a
                   key={index}
                   href={social.href}
-                  className="text-gray-400 hover:text-[#7B2CBF] transition-colors duration-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-[#7B2CBF] transition-colors duration-300 flex items-center gap-2"
                   variants={socialIconVariants}
                   whileHover="hover"
                   style={{ originX: 0.5, originY: 0.5 }}
                 >
-                  <social.icon className="h-6 w-6" />
+                  <social.icon className="h-5 w-5" />
+                  <span className="text-sm">{social.label}</span>
                 </motion.a>
               ))}
             </motion.div>
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h3 className="text-white font-semibold mb-6">Quick Links</h3>
+            <h3 className="text-white font-semibold mb-6">Hızlı Bağlantılar</h3>
             <ul className="space-y-4">
-              {['Features', 'Commands', 'FAQ', 'Support Server'].map((item, index) => (
+              {[
+                { name: 'Özellikler', path: 'features' },
+                { name: 'Komutlar', path: 'commands' },
+                { name: 'SSS', path: 'faq' },
+                { name: 'Destek Sunucusu', path: 'https://discord.gg/wCK5dVSY2n', external: true }
+              ].map((item, index) => (
                 <motion.li
-                  key={item}
+                  key={item.name}
                   variants={itemVariants}
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
                 >
                   <a 
-                    href={`#${item.toLowerCase().replace(' ', '-')}`}
+                    href={item.external ? item.path : `#${item.path}`}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
                     className="text-gray-400 hover:text-[#7B2CBF] transition-colors duration-300 flex items-center"
                   >
-                    {item}
+                    {item.name}
                   </a>
                 </motion.li>
               ))}
@@ -145,32 +159,37 @@ const Footer = () => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h3 className="text-white font-semibold mb-6">Contact Us</h3>
+            <h3 className="text-white font-semibold mb-6">Diğer Bağlantılar</h3>
             <ul className="space-y-4">
+              {socialLinks.slice(3).map((item, index) => (
+                <motion.li
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <a 
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-[#7B2CBF] transition-colors duration-300 flex items-center gap-2"
+                  >
+                    <item.icon className="h-5 w-5 text-[#7B2CBF]" />
+                    <span>{item.label}</span>
+                  </a>
+                </motion.li>
+              ))}
               <motion.li 
                 className="flex items-center text-gray-400 group"
                 whileHover={{ x: 5 }}
                 transition={{ duration: 0.2 }}
               >
-                <Mail className="h-5 w-5 mr-3 text-[#7B2CBF] group-hover:text-[#3A0CA3] transition-colors duration-300" />
+                <Mail className="h-5 w-5 mr-2 text-[#7B2CBF] group-hover:text-[#3A0CA3] transition-colors duration-300" />
                 <a 
                   href="mailto:support@NexusUI.com"
                   className="hover:text-[#7B2CBF] transition-colors duration-300"
                 >
-                  support@NexusUI.com
-                </a>
-              </motion.li>
-              <motion.li 
-                className="flex items-center text-gray-400 group"
-                whileHover={{ x: 5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Discord className="h-5 w-5 mr-3 text-[#7B2CBF] group-hover:text-[#3A0CA3] transition-colors duration-300" />
-                <a 
-                  href="#"
-                  className="hover:text-[#7B2CBF] transition-colors duration-300"
-                >
-                  Join Support Server
+                  İletişim
                 </a>
               </motion.li>
             </ul>
@@ -182,7 +201,7 @@ const Footer = () => {
           variants={itemVariants}
         >
           <p className="text-gray-400">
-            © {new Date().getFullYear()} NexusUI. All rights reserved.
+            © {new Date().getFullYear()} NexusUI. Tüm hakları saklıdır.
           </p>
         </motion.div>
       </motion.div>
