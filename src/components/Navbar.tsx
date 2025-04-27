@@ -257,7 +257,7 @@ const Navbar = () => {
                 animate="animate"
                 custom={4}
                 onMouseEnter={() => { setHoveredItem("add"); }}
-                onMouseLeave={() => setHoveredItem(null)}
+                onMouseLeave={() => { setHoveredItem(null); }}
               >
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-[#7B2CBF] to-[#3A0CA3] rounded-md"

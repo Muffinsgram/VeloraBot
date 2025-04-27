@@ -211,7 +211,7 @@ const Hero: FC = () => {
             whileHover="hover"
             whileTap="tap"
             onMouseEnter={() => { setHoverButton("features"); }}
-            onMouseLeave={() => setHoverButton(null)}
+            onMouseLeave={() => { setHoverButton(null); }}
             className="group relative px-8 py-4 text-lg font-medium rounded-md transition-all overflow-hidden"
           >
             <motion.div 
