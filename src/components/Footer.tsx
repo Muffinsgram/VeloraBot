@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Bot, Github, Disc as Discord, Mail, Instagram, Globe, Code } from 'lucide-react';
