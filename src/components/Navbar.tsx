@@ -34,7 +34,7 @@ const Navbar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => { window.removeEventListener('scroll', handleScroll); };
   }, []);
 
   const logoVariants = {
@@ -225,8 +225,8 @@ const Navbar = () => {
                   initial="initial"
                   animate="animate"
                   custom={index}
-                  onMouseEnter={() => setHoveredItem(item.name)}
-                  onMouseLeave={() => setHoveredItem(null)}
+                  onMouseEnter={() => { setHoveredItem(item.name); }}
+                  onMouseLeave={() => { setHoveredItem(null); }}
                   onClick={(e) => handleAnchorClick(e, {
                     duration: 800,
                     offset: 80,
@@ -256,7 +256,7 @@ const Navbar = () => {
                 initial="initial"
                 animate="animate"
                 custom={4}
-                onMouseEnter={() => setHoveredItem("add")}
+                onMouseEnter={() => { setHoveredItem("add"); }}
                 onMouseLeave={() => setHoveredItem(null)}
               >
                 <motion.div 
@@ -342,7 +342,7 @@ const Navbar = () => {
 
           <div className="md:hidden">
             <motion.button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => { setIsOpen(!isOpen); }}
               className="relative nav-button inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white focus:outline-none transition-all overflow-hidden"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -431,7 +431,7 @@ const Navbar = () => {
                 href="#"
                 variants={mobileItemVariants}
                 className="flex justify-center items-center w-full text-center bg-gradient-to-r from-[#7B2CBF] to-[#3A0CA3] text-white px-4 py-3 rounded-md font-medium transition-all"
-                onClick={() => setIsOpen(false)}
+                onClick={() => { setIsOpen(false); }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

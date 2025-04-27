@@ -17,7 +17,7 @@ function App() {
       setIsLoading(false);
     }, 1200);
     
-    return () => clearTimeout(timer);
+    return () => { clearTimeout(timer); };
   }, []);
 
   const particles = Array.from({ length: 20 });

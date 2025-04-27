@@ -27,7 +27,7 @@ const Commands: React.FC = () => {
   );
   
   const handleCopyCommand = (command: string) => {
-    navigator.clipboard.writeText(command);
+    void navigator.clipboard.writeText(command);
     setIsCopied(command);
     
     setTimeout(() => {
@@ -267,7 +267,7 @@ const Commands: React.FC = () => {
               placeholder="Komutları ara..."
               className="w-full pl-12 pr-4 py-3 bg-[#1E1E1E]/70 backdrop-blur-md rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7B2CBF]/50 border border-[#7B2CBF]/20 transition-all duration-300"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => { setSearchTerm(e.target.value); }}
             />
             
             <motion.div
@@ -304,8 +304,8 @@ const Commands: React.FC = () => {
                     transition: { duration: 0.2 }
                   }}
                   className="relative group"
-                  onMouseEnter={() => setHoveredCommand(command.name)}
-                  onMouseLeave={() => setHoveredCommand(null)}
+                  onMouseEnter={() => { setHoveredCommand(command.name); }}
+                  onMouseLeave={() => { setHoveredCommand(null); }}
                 >
                   <div className={`absolute -inset-0.5 bg-gradient-to-r ${getCategoryColor(command.category).split(' ')[0]} ${getCategoryColor(command.category).split(' ')[1]} rounded-lg opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300`} />
                   
@@ -361,7 +361,7 @@ const Commands: React.FC = () => {
                         transition={{ duration: 0.2 }}
                       >
                         <motion.button
-                          onClick={() => handleCopyCommand(command.name)}
+                          onClick={() => { handleCopyCommand(command.name); }}
                           className="flex items-center text-xs text-[#7B2CBF] hover:text-white transition-colors"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}

@@ -82,7 +82,7 @@ export const useSmooth = () => {
     };
 
     window.addEventListener('popstate', handleNavigation);
-    return () => window.removeEventListener('popstate', handleNavigation);
+    return () => { window.removeEventListener('popstate', handleNavigation); };
   }, [scrollToElement]);
 
   return {

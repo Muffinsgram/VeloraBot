@@ -174,8 +174,8 @@ const Hero: FC = () => {
             initial="initial"
             whileHover="hover"
             whileTap="tap"
-            onMouseEnter={() => setHoverButton("add")}
-            onMouseLeave={() => setHoverButton(null)}
+            onMouseEnter={() => { setHoverButton("add"); }}
+            onMouseLeave={() => { setHoverButton(null); }}
             className="group relative px-8 py-4 text-lg font-medium rounded-md text-white transition-all overflow-hidden"
           >
             <motion.div 
@@ -210,7 +210,7 @@ const Hero: FC = () => {
             initial="initial"
             whileHover="hover"
             whileTap="tap"
-            onMouseEnter={() => setHoverButton("features")}
+            onMouseEnter={() => { setHoverButton("features"); }}
             onMouseLeave={() => setHoverButton(null)}
             className="group relative px-8 py-4 text-lg font-medium rounded-md transition-all overflow-hidden"
           >

@@ -256,7 +256,7 @@ const FAQ = () => {
             >
               <motion.button
                 className="w-full px-6 py-4 text-left flex justify-between items-center group relative overflow-hidden"
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                onClick={() => { setOpenIndex(openIndex === index ? null : index); }}
                 whileTap={{ scale: 0.98 }}
               >
                 <motion.div 

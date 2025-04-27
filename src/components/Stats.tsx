@@ -35,7 +35,7 @@ const CountingNumber: React.FC<{ value: number, suffix: string }> = ({ value, su
       }
     }, 16);
     
-    return () => clearInterval(timer);
+    return () => { clearInterval(timer); };
   }, [value, isInView]);
   
   return (
