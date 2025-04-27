@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Search, Command, Zap, Terminal, Copy, ArrowRight, Shield, Music } from 'lucide-react';
+import { Search, Command, Zap, Terminal, Copy, Shield, Music } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 
 const Commands: React.FC = () => {
@@ -295,7 +295,7 @@ const Commands: React.FC = () => {
             exit="hidden"
           >
             {filteredCommands.length > 0 ? (
-              filteredCommands.map((command, index) => (
+              filteredCommands.map((command, _index) => (
                 <motion.div
                   key={command.name}
                   variants={cardVariants}

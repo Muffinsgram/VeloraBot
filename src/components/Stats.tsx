@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Users, Server, Zap, PlusCircle, Heart, Sparkles } from 'lucide-react';
+import { Users, Server, Zap, Sparkles } from 'lucide-react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 
 interface StatItemProps {
@@ -9,7 +9,7 @@ interface StatItemProps {
   numericValue: number;
   index: number;
   isHovered: boolean;
-  onHover: (index: number | null) => void;
+  onHover: (_index: number | null) => void;
 }
 
 const CountingNumber: React.FC<{ value: number, suffix: string }> = ({ value, suffix }) => {
@@ -48,7 +48,7 @@ const CountingNumber: React.FC<{ value: number, suffix: string }> = ({ value, su
 
 const StatItem: React.FC<StatItemProps> = ({ icon: Icon, label, value, numericValue, index, isHovered, onHover }) => {
   const particles = Array.from({ length: 8 });
-  const [suffix, numValue] = value.split(/([0-9]+)/);
+  const [suffix] = value.split(/([0-9]+)/);
   
   const cardVariants = {
     hidden: { 

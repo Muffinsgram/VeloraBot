@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react';
 
 interface SmoothScrollOptions {
   duration?: number;
-  easing?: (t: number) => number;
+  easing?: (_t: number) => number;
   offset?: number;
 }
 

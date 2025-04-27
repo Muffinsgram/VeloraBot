@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Bot, ExternalLink, Github, Heart, Sparkles } from 'lucide-react';
+import { Menu, X, Bot, ExternalLink, Sparkles } from 'lucide-react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useSmooth } from '../hooks/useSmooth';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const { handleAnchorClick } = useSmooth();
   const { scrollY } = useScroll();
@@ -28,14 +27,6 @@ const Navbar = () => {
     ["5rem", "4rem"]
   );
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => { window.removeEventListener('scroll', handleScroll); };
-  }, []);
 
   const logoVariants = {
     initial: { scale: 0.8, opacity: 0 },
@@ -125,7 +116,7 @@ const Navbar = () => {
     { name: 'FAQ', href: '#faq' },
   ];
   
-  const generateFlare = (index: number) => {
+  const generateFlare = (_index: number) => {
     const particles = Array.from({ length: 3 });
     
     return (
@@ -227,10 +218,10 @@ const Navbar = () => {
                   custom={index}
                   onMouseEnter={() => { setHoveredItem(item.name); }}
                   onMouseLeave={() => { setHoveredItem(null); }}
-                  onClick={(e) => handleAnchorClick(e, {
+                  onClick={(e) => { handleAnchorClick(e, {
                     duration: 800,
                     offset: 80,
-                  })}
+                  }); }}
                 >
                   <div className="relative z-10">
                     {item.name}
@@ -393,7 +384,7 @@ const Navbar = () => {
             className="absolute top-full left-0 right-0 md:hidden overflow-hidden bg-[#121212]/95 backdrop-blur-md border-t border-purple-900/20 z-40"
           >
             <div className="px-4 py-5 space-y-3">
-              {navItems.map((item, index) => (
+              {navItems.map((item, _index) => (
                 <motion.a
                   key={item.name}
                   href={item.href}

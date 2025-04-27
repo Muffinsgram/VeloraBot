@@ -112,9 +112,9 @@ const Footer = () => {
               className="flex flex-wrap gap-4"
               variants={itemVariants}
             >
-              {socialLinks.slice(0, 3).map((social, index) => (
+              {socialLinks.slice(0, 3).map((social, _index) => (
                 <motion.a
-                  key={index}
+                  key={_index}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -138,7 +138,7 @@ const Footer = () => {
                 { name: 'Komutlar', path: 'commands' },
                 { name: 'SSS', path: 'faq' },
                 { name: 'Destek Sunucusu', path: 'https://discord.gg/wCK5dVSY2n', external: true }
-              ].map((item, index) => (
+              ].map((item, _index) => (
                 <motion.li
                   key={item.name}
                   variants={itemVariants}
@@ -161,9 +161,9 @@ const Footer = () => {
           <motion.div variants={itemVariants}>
             <h3 className="text-white font-semibold mb-6">Diğer Bağlantılar</h3>
             <ul className="space-y-4">
-              {socialLinks.slice(3).map((item, index) => (
+              {socialLinks.slice(3).map((item, _index) => (
                 <motion.li
-                  key={index}
+                  key={_index}
                   variants={itemVariants}
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}

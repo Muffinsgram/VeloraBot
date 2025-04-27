@@ -3,7 +3,6 @@ import { Bot, ArrowRight, Shield, Music, MessageSquare, Star, Command, Sparkles 
 import { motion } from 'framer-motion';
 
 const Hero: FC = () => {
-  const [isHovered, setIsHovered] = useState(false);
   const [hoverButton, setHoverButton] = useState<string | null>(null);
   
   const features = [

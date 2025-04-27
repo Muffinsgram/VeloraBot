@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Plus, Minus, HelpCircle, Sparkles, Star, Wand2 } from 'lucide-react';
+import { Plus, Minus, HelpCircle, Wand2 } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 
 const FAQ = () => {

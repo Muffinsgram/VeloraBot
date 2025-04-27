@@ -16,7 +16,7 @@ interface FeatureCardProps {
   feature: FeatureItem;
   index: number;
   isSelected: boolean;
-  onSelect: (index: number) => void;
+  onSelect: (_index: number) => void;
 }
 
 const Features: React.FC = () => {
@@ -292,18 +292,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ feature, index, isSelected, o
       transition: {
         duration: 0.4,
         ease: "easeOut"
-      }
-    }
-  };
-  
-  const borderGlowVariants = {
-    hidden: { opacity: 0, pathLength: 0 },
-    visible: { 
-      opacity: 0.5, 
-      pathLength: 1,
-      transition: {
-        duration: 1.5,
-        ease: "easeInOut"
       }
     }
   };
