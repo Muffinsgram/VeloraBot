@@ -52,11 +52,9 @@ const Footer = () => {
   };
   
   const socialLinks = [
-    { icon: Discord, href: "https://discord.gg/wCK5dVSY2n", label: "Discord" },
-    { icon: Github, href: "https://github.com/kynuxdev", label: "GitHub" },
-    { icon: Code, href: "https://github.com/KynuxDev/NexusUI-WebSite", label: "NexusUI Kaynak Kodu" },
-    { icon: Instagram, href: "https://instagram.com/kynux_dev", label: "Instagram" },
-    { icon: Globe, href: "https://kynux.cloud", label: "Geliştirici Sitesi" },
+    { icon: Discord, href: "https://discord.gg/veronicajb", label: "Discord" },
+    { icon: Instagram, href: "https://instagram.com/muffinsgram", label: "Instagram" },
+    { icon: Globe, href: "https://veronicajb.xyz", label: "Geliştirici Sitesi" },
   ];
 
   return (
@@ -97,7 +95,7 @@ const Footer = () => {
                 <Bot className="h-8 w-8 text-[#7B2CBF] group-hover:text-[#3A0CA3] transition-colors duration-300" />
               </motion.div>
               <span className="ml-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 group-hover:from-[#7B2CBF] group-hover:to-[#3A0CA3] transition-colors duration-300">
-                NexusUI
+                Velora
               </span>
             </motion.div>
             <motion.p 
@@ -185,7 +183,7 @@ const Footer = () => {
               >
                 <Mail className="h-5 w-5 mr-2 text-[#7B2CBF] group-hover:text-[#3A0CA3] transition-colors duration-300" />
                 <a 
-                  href="mailto:support@NexusUI.com"
+                  href="mailto:emirhan.03123@gmail.com"
                   className="hover:text-[#7B2CBF] transition-colors duration-300"
                 >
                   İletişim
@@ -200,7 +198,7 @@ const Footer = () => {
           variants={itemVariants}
         >
           <p className="text-gray-400">
-            © {new Date().getFullYear()} NexusUI. Tüm hakları saklıdır.
+            © {new Date().getFullYear()} Velora. Tüm hakları saklıdır.
           </p>
         </motion.div>
       </motion.div>
