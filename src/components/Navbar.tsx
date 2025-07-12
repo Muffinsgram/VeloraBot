@@ -201,7 +201,7 @@ const Navbar = () => {
               className="ml-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 group-hover:from-[#7B2CBF] group-hover:to-[#3A0CA3] transition-all duration-300"
               variants={textVariants}
             >
-              NexusUI
+              Velora
             </motion.span>
           </motion.div>
           
