@@ -13,11 +13,7 @@ const Commands: React.FC = () => {
     { category: 'Moderasyon', name: '/ban', description: 'Bir kullanıcıyı sunucudan yasakla' },
     { category: 'Moderasyon', name: '/kick', description: 'Bir kullanıcıyı sunucudan at' },
     { category: 'Moderasyon', name: '/mute', description: 'Bir kullanıcıyı geçici olarak sustur' },
-    { category: 'Müzik', name: '/play', description: 'Bir şarkı veya çalma listesi çal' },
-    { category: 'Müzik', name: '/skip', description: 'Geçerli şarkıyı atla' },
-    { category: 'Müzik', name: '/queue', description: 'Geçerli müzik sırasını görüntüle' },
-    { category: 'Eğlence', name: '/poll', description: 'Bir anket oluştur' },
-    { category: 'Eğlence', name: '/trivia', description: 'Bir bilgi yarışması başlat' },
+    { category: 'Genel', name: '/kullanıcıbilgi', description: 'Bir kişinin bilgilerini görün' },
   ];
 
   const filteredCommands = commands.filter(
