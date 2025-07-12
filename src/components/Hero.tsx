@@ -151,7 +151,7 @@ const Hero: FC = () => {
           variants={itemVariants} 
           className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl"
         >
-          <span className="block bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">NexusUI</span>
+          <span className="block bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">Velora</span>
           <motion.span 
             className="block text-transparent bg-clip-text bg-gradient-to-r from-[#7B2CBF] to-[#3A0CA3]"
           >
