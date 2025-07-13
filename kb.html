@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Profili</title>
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/16">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Anahtar Kare Animasyonları */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes stagger {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes tooltipFade {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(255, 107, 0, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(255, 107, 0, 0.4); }
+        }
+
+        /* Genel Vücut Stilleri */
+        body {
+            background: linear-gradient(135deg, #12121e 0%, #1a1a2a 100%); /* Daha koyu, sofistike arka plan */
+            perspective: 1000px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Daha modern bir yazı tipi */
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://via.placeholder.com/1500x1000/1e1e2e/2a2a3a?text=CS2+Texture') repeat;
+            opacity: 0.05; /* Daha hafif doku */
+            z-index: -1;
+        }
+
+        /* Profil Konteyner Stilleri */
+        .profile-container {
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.3s ease;
+            background-color: #1a1a2a; /* Varsayılan koyu kart arka planı */
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #ff6b00; /* CS2 neon turuncu çerçeve */
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 107, 0, 0.2); /* Gelişmiş gölge */
+            animation: fadeIn 0.8s ease-out; /* Giriş animasyonu */
+            background-size: cover; /* Banner resmi için */
+            background-position: center; /* Banner resmi için */
+        }
+        .profile-container:hover {
+            transform: rotateX(4deg) rotateY(4deg) scale(1.02); /* Hafif 3D ve büyüme efekti */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 107, 0, 0.6); /* Daha belirgin gölge */
+        }
+        /* Mavili geçiş kısmı (banner üzerine gelecek gradient) */
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 180px; /* Banner'ın yüksekliği kadar */
+            background: linear-gradient(to top, rgba(26, 26, 42, 0.9) 0%, rgba(26, 26, 42, 0.4) 50%, transparent 100%); /* Alt kısımda daha opak */
+            z-index: 1; /* İçeriğin arkasında, banner'ın üstünde */
+        }
+
+        /* Profil Başlığı - İçerik Kontrolü */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px; /* Diğer içeriklerle boşluk */
+            position: relative; /* Z-index için */
+            z-index: 10; /* Üstte kalmasını sağla */
+            padding: 24px; /* Avatar ve metin için iç boşluk */
+            padding-top: 24px; /* Azaltılmış üst boşluk */
+            background: rgba(10, 10, 10, 0.7); /* Hafif koyu ve şeffaf arka plan */
+            border-radius: 8px; /* Köşeleri yuvarla */
+        }
+
+        /* Durum Göstergesi */
+        .status-indicator {
+            width: 18px; /* Biraz daha büyük */
+            height: 18px; /* Biraz daha büyük */
+            border-radius: 50%;
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            border: 3px solid #1a1a2a; /* Konteyner arka planıyla uyumlu kenarlık */
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.8), 0 0 15px rgba(255, 107, 0, 0.4); /* Parlayan gölge */
+            animation: pulseGlow 2s infinite alternate; /* Canlı nabız efekti */
+        }
+        .status-online { background-color: #43b581; }
+        .status-offline { background-color: #747f8d; }
+        .status-idle { background-color: #faa61a; }
+        .status-dnd { background-color: #f04747; }
+
+        /* Rozetler, Roller ve Kopyalama Butonları */
+        .badge, .role, .copy-btn {
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            animation: stagger 0.3s ease-in-out forwards;
+            font-weight: 500;
+        }
+        .badge:nth-child(2) { animation-delay: 0.1s; }
+        .badge:nth-child(3) { animation-delay: 0.2s; }
+        .role:nth-child(2) { animation-delay: 0.1s; }
+        .role:nth-child(3) { animation-delay: 0.2s; }
+        .badge:hover, .role:hover, .copy-btn:hover {
+            transform: scale(1.1); /* Daha belirgin büyüme */
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.8);
+            background-color: #6a76f7; /* Kopyalama butonu için vurgulu hover */
+        }
+        .copy-btn {
+            width: 28px; /* Biraz daha büyük */
+            height: 28px; /* Biraz daha büyük */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #5865f2;
+            border-radius: 6px; /* Daha yuvarlak */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            margin-left: 8px; /* Username ile arasında boşluk */
+        }
+        .copy-btn.copied svg.copy-icon { display: none; }
+        .copy-btn.copied svg.check-icon { display: inline; }
+        .copy-btn svg.check-icon { display: none; }
+
+        /* Yükleyici Stilleri */
+        .loader {
+            width: 60px; /* Daha büyük */
+            height: 60px; /* Daha büyük */
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #ff6b00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+            position: relative;
+        }
+        .loader::after {
+            content: '🎯';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px; /* Daha büyük emoji */
+            color: #ff6b00; /* Neon renk */
+        }
+
+        /* Araç İpuçları */
+        .tooltip {
+            position: relative;
+        }
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%; /* Biraz daha yukarı */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #0d0d1a; /* Daha koyu arkaplan */
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.7); /* Parlayan gölge */
+            animation: tooltipFade 0.2s ease-in-out;
+        }
+
+        /* Silah Şarj Animasyonu */
+        @keyframes weaponCharge {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+        .weapon-charge {
+            position: absolute;
+            top: 25px; /* Biraz daha aşağı */
+            left: 0;
+            width: 100%;
+            height: 25px; /* Biraz daha kalın */
+            z-index: 20;
+            animation: weaponCharge 1.5s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .weapon-charge svg path {
+            filter: drop-shadow(0 0 8px rgba(255, 107, 0, 0.8)); /* Gölge efekti */
+        }
+
+        /* Medya Sorguları */
+        @media (max-width: 640px) {
+            .badge, .role { transform: scale(0.9); }
+            .profile-container:hover { transform: rotateX(0deg) rotateY(0deg) scale(1); } /* Mobilde 3D ve büyüme efekti devre dışı */
+            .status-indicator { animation: none; /* Mobilde nabız efekti devre dışı */ }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div id="loader" class="loader"></div>
+    <div id="weapon-charge" class="weapon-charge hidden">
+        <svg width="60" height="30" viewBox="0 0 40 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 5H30L25 15H15L10 5Z" fill="#ff6b00"/>
+            <path d="M18 7H22V13H18V7Z" fill="#1e1e2e"/>
+        </svg>
+    </div>
+    <div id="profile-container" class="profile-container bg-gray-800 rounded-xl p-6 w-full max-w-lg shadow-2xl hidden">
+        <div class="flex justify-end mb-4 relative z-20">
+            <button id="copy-link" class="copy-btn bg-indigo-600 text-white p-1 rounded-full">
+                <svg class="copy-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 2H4C2.9 2 2 2.9 2 4V10H4V4H10V2ZM12 4H6C4.9 4 4 4.9 4 6V12C4 13.1 4.9 14 6 14H12C13.1 14 14 13.1 14 12V6C14 4.9 13.1 4 12 4ZM12 12H6V6H12V12Z" fill="white"/>
+                </svg>
+                <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 10.59L3.71 8.3C3.32 7.91 2.69 7.91 2.3 8.3C1.91 8.69 1.91 9.32 2.3 9.71L5.29 12.7C5.68 13.09 6.31 13.09 6.7 12.7L13.7 5.7C14.09 5.31 14.09 4.68 13.7 4.29C13.31 3.9 12.68 3.9 12.29 4.29L6 10.59Z" fill="white"/>
+                </svg>
+            </button>
+        </div>
+        <div class="profile-header flex items-center mb-6 relative z-10">
+            <div class="relative">
+                <img id="avatar" src="https://via.placeholder.com/80" alt="Avatar" class="w-28 h-28 rounded-full border-4 border-indigo-900 shadow-lg">
+                <div id="status-indicator" class="status-indicator status-offline"></div>
+            </div>
+            <div class="ml-4 flex-grow">
+                <div class="flex items-center">
+                    <h1 id="username" class="text-4xl font-extrabold text-white mr-2 drop-shadow-lg">Yükleniyor...</h1>
+                    <button id="copy-username" class="copy-btn bg-indigo-600 text-white p-1 rounded-full">
+                        <svg class="copy-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 2H4C2.9 2 2 2.9 2 4V10H4V4H10V2ZM12 4H6C4.9 4 4 4.9 4 6V12C4 13.1 4.9 14 6 14H12C13.1 14 14 13.1 14 12V6C14 4.9 13.1 4 12 4ZM12 12H6V6H12V12Z" fill="white"/>
+                        </svg>
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 10.59L3.71 8.3C3.32 7.91 2.69 7.91 2.3 8.3C1.91 8.69 1.91 9.32 2.3 9.71L5.29 12.7C5.68 13.09 6.31 13.09 6.7 12.7L13.7 5.7C14.09 5.31 14.09 4.68 13.7 4.29C13.31 3.9 12.68 3.9 12.29 4.29L6 10.59Z" fill="white"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="badges" class="badges flex flex-wrap gap-2 mt-2">Yükleniyor...</div>
+            </div>
+        </div>
+        <div class="profile-info space-y-4 p-4 rounded-lg bg-gray-700 bg-opacity-30 relative z-10">
+            <p class="text-white text-lg"><strong class="text-orange-500">Kullanıcı ID:</strong> <span id="userId">Yükleniyor...</span> <button id="copy-userid" class="copy-btn bg-indigo-600 text-white p-1 rounded-full ml-2">
+                <svg class="copy-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 2H4C2.9 2 2 2.9 2 4V10H4V4H10V2ZM12 4H6C4.9 4 4 4.9 4 6V12C4 13.1 4.9 14 6 14H12C13.1 14 14 13.1 14 12V6C14 4.9 13.1 4 12 4ZM12 12H6V6H12V12Z" fill="white"/>
+                </svg>
+                <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 10.59L3.71 8.3C3.32 7.91 2.69 7.91 2.3 8.3C1.91 8.69 1.91 9.32 2.3 9.71L5.29 12.7C5.68 13.09 6.31 13.09 6.7 12.7L13.7 5.7C14.09 5.31 14.09 4.68 13.7 4.29C13.31 3.9 12.68 3.9 12.29 4.29L6 10.59Z" fill="white"/>
+                </svg>
+            </button></p>
+            <p class="text-white text-lg"><strong class="text-orange-500">Katılma Tarihi:</strong> <span id="joinDate">Yükleniyor...</span></p>
+            <p class="text-white text-lg"><strong class="text-orange-500">Hesap Oluşturma:</strong> <span id="createdDate">Yükleniyor...</span></p>
+            <p class="text-white text-lg"><strong class="text-orange-500">Sunucu Takviye:</strong> <span id="boostingSince">Yükleniyor...</span></p>
+            
+            <div class="pt-4 border-t border-gray-600 mt-4">
+                <p class="text-white text-lg mb-2"><strong class="text-orange-500">Roller:</strong></p>
+                <div id="roles" class="roles flex flex-wrap gap-2">Yükleniyor...</div>
+            </div>
+            
+            <div class="pt-4 border-t border-gray-600 mt-4">
+                <p class="text-white text-lg mb-2"><strong class="text-orange-500">Aktiviteler:</strong></p>
+                <div id="activities" class="activities flex flex-col gap-2">Yükleniyor...</div>
+            </div>
+        </div>
+        <p class="text-white text-center font-bold mt-6 px-6 py-3 rounded-lg bg-gray-700 shadow-md transition-colors duration-300 relative z-10 cursor-default opacity-80">
+            <strong class="text-orange-300">Gönderen Sunucu:</strong> <span id="sendingServerName">Yükleniyor...</span>
+        </p>
+    </div>
+    <div id="error-container" class="hidden text-center text-red-500 text-lg bg-gray-800 p-4 rounded-xl max-w-lg"></div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+        const guildId = urlParams.get('guildId');
+
+        console.log('userId:', userId);
+        console.log('guildId:', guildId);
+
+        const profileContainer = document.getElementById("profile-container");
+        const loader = document.getElementById("loader");
+        const errorContainer = document.getElementById("error-container");
+        const weaponCharge = document.getElementById("weapon-charge");
+
+        // Rozetler için ikon eşleştirme
+        const badgeIcons = {
+            'Staff': '🛡️',
+            'Partner': '⭐',
+            'Hypesquad': '🎭',
+            'BugHunterLevel1': '🐞',
+            'BugHunterLevel2': '🐞💎',
+            'HypeSquadOnlineHouse1': '🏰',
+            'HypeSquadOnlineHouse2': '💡',
+            'HypeSquadOnlineHouse3': '⚖️',
+            'PremiumEarlySupporter': '🌟',
+            'VerifiedDeveloper': '✅',
+            'CertifiedModerator': '👮',
+            'ActiveDeveloper': '💻'
+        };
+
+        function showLoader() {
+            loader.classList.remove("hidden");
+            weaponCharge.classList.remove("hidden");
+            profileContainer.classList.add("hidden");
+            errorContainer.classList.add("hidden");
+        }
+
+        function showError(message) {
+            loader.classList.add("hidden");
+            weaponCharge.classList.add("hidden");
+            profileContainer.classList.add("hidden");
+            errorContainer.classList.remove("hidden");
+            errorContainer.textContent = message;
+        }
+
+        function showProfile() {
+            loader.classList.add("hidden");
+            weaponCharge.classList.add("hidden");
+            profileContainer.classList.remove("hidden");
+            profileContainer.classList.add("fade-in");
+            setTimeout(() => profileContainer.classList.remove("fade-in"), 500);
+        }
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                button.classList.add("copied");
+                setTimeout(() => {
+                    button.classList.remove("copied");
+                }, 2000);
+            });
+        }
+
+        // 3D efekt için fare hareketi
+        profileContainer.addEventListener("mousemove", (e) => {
+            const rect = profileContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rotateX = -y / 30; /* Daha az döndürme */
+            const rotateY = x / 30; /* Daha az döndürme */
+            profileContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        profileContainer.addEventListener("mouseleave", () => {
+            profileContainer.style.transform = "rotateX(0deg) rotateY(0deg)";
+        });
+
+        if (!userId || !guildId) {
+            showError("Hata: Kullanıcı ID veya sunucu ID eksik. Lütfen bağlantıyı kontrol edin.");
+            console.error('Hata: userId veya guildId eksik');
+        } else {
+            showLoader();
+            console.log('API çağrısı yapılıyor:', `http://localhost:3000/api/user/${userId}/${guildId}`);
+            fetch(`http://localhost:3000/api/user/${userId}/${guildId}`)
+                .then(response => {
+                    console.log('API yanıtı:', response);
+                    if (!response.ok) {
+                        throw new Error(`API hatası: ${response.status} ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('API verisi:', data);
+                    showProfile();
+                    document.getElementById("userId").textContent = data.userId;
+                    document.getElementById("username").textContent = data.username;
+                    document.getElementById("avatar").src = data.avatar;
+                    
+                    // Banner'ı profile-container'ın arka planı olarak ayarla
+                    if (data.banner) {
+                        profileContainer.style.backgroundImage = `url(${data.banner})`;
+                        profileContainer.style.backgroundColor = 'transparent'; // Varsayılan arka planı temizle
+                    } else {
+                        // Banner yoksa, sadece varsayılan arka plan rengini veya genel gradienti kullan
+                        profileContainer.style.backgroundImage = 'none';
+                        profileContainer.style.backgroundColor = '#1a1a2a'; // Varsayılan arka plan rengi
+                    }
+
+                    document.getElementById("joinDate").textContent = data.joinDate;
+                    document.getElementById("createdDate").textContent = data.createdDate;
+                    document.getElementById("badges").innerHTML = data.badges.length > 0
+                        ? data.badges.map((badge, index) => {
+                            const icon = badgeIcons[badge] || '🔧'; // Varsayılan ikon
+                            return `<span class="badge tooltip text-white p-2 rounded-full text-lg" style="animation-delay: ${index * 0.1}s" data-tooltip="${badge}">${icon}</span>`;
+                        }).join("")
+                        : "";
+                    document.getElementById("roles").innerHTML = data.roles.length > 0
+                        ? data.roles.map((role, index) => `<span class="role tooltip text-white px-3 py-1 rounded-full text-sm" style="background-color: ${role.color}; animation-delay: ${index * 0.1}s" data-tooltip="${role.name}">${role.name}</span>`).join("")
+                        : "Yok";
+                    document.getElementById("boostingSince").textContent = data.boostingSince;
+                    
+                    document.getElementById("activities").innerHTML = data.activities.length > 0
+                        ? data.activities.map(activity => {
+                            if (activity.startsWith("✨ Özel Durum:")) {
+                                const prefix = "✨ Özel Durum:";
+                                const statusText = activity.substring(prefix.length).trim();
+                                return `<div><span class="text-gray-300">${prefix}</span> <span class="text-white">${statusText}</span></div>`;
+                            } else {
+                                return `<div class="text-white">🎮 ${activity}</div>`;
+                            }
+                        }).join("")
+                        : "Yok";
+                        
+                    const statusIndicator = document.getElementById("status-indicator");
+                    statusIndicator.classList.remove("status-offline");
+                    statusIndicator.classList.add(`status-${data.status}`);
+
+                    // Gönderen Sunucu Adını Güncelle
+                    document.getElementById("sendingServerName").textContent = data.guildName || "Bilinmiyor";
+
+
+                    // Kopyalama butonları
+                    document.getElementById("copy-userid").addEventListener("click", () => {
+                        copyToClipboard(data.userId, document.getElementById("copy-userid"));
+                    });
+                    document.getElementById("copy-username").addEventListener("click", () => {
+                        copyToClipboard(data.username, document.getElementById("copy-username"));
+                    });
+                    document.getElementById("copy-link").addEventListener("click", () => {
+                        copyToClipboard(window.location.href, document.getElementById("copy-link"));
+                    });
+                })
+                .catch(error => {
+                    console.error('Hata:', error.message);
+                    showError(`Hata: ${error.message}. Lütfen sunucu ID'sini ve bağlantıyı kontrol edin.`);
+                });
+        }
+    </script>
+</body>
+</html>
