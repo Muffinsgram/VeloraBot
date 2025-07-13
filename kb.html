@@ -293,20 +293,29 @@
         const errorContainer = document.getElementById("error-container");
         const weaponCharge = document.getElementById("weapon-charge");
 
+        // BURAYI VERCEL'E DAĞITTIĞINIZ API URL'NİZLE DEĞİŞTİRİN!
+        // Örnek: "https://your-vercel-api-project-name.vercel.app/api"
+        const API_BASE_URL = "https://your-vercel-api-project-name.vercel.app/api"; // Lütfen burayı güncelleyin!
+
         // Rozetler için ikon eşleştirme
         const badgeIcons = {
-            'Staff': '🛡️',
-            'Partner': '⭐',
-            'Hypesquad': '🎭',
-            'BugHunterLevel1': '🐞',
-            'BugHunterLevel2': '🐞💎',
-            'HypeSquadOnlineHouse1': '🏰',
-            'HypeSquadOnlineHouse2': '💡',
-            'HypeSquadOnlineHouse3': '⚖️',
-            'PremiumEarlySupporter': '🌟',
-            'VerifiedDeveloper': '✅',
-            'CertifiedModerator': '👮',
-            'ActiveDeveloper': '💻'
+            'Discord Çalışanı': '🛡️',
+            'Discord Partner': '⭐',
+            'HypeSquad': '🎭',
+            'Hata Avcısı Seviye 1': '🐞',
+            'Hata Avcısı Seviye 2': '🐞💎',
+            'HypeSquad Bravery': '🏰',
+            'HypeSquad Brilliance': '💡',
+            'HypeSquad Balance': '⚖️',
+            'Erken Destekçi': '🌟',
+            'Onaylı Geliştirici': '✅',
+            'Sertifikalı Moderatör': '👮',
+            'Aktif Geliştirici': '💻',
+            'Bot': '🤖', // API'den gelen "Bot" rozeti için
+            'Doğrulanmış Bot': '✅', // API'den gelen "Doğrulanmış Bot" rozeti için
+            'Sunucu Destekçisi': '💎', // API'den gelen "Sunucu Destekçisi" rozeti için
+            'Sunucu Sahibi': '👑', // API'den gelen "Sunucu Sahibi" rozeti için
+            'Yönetici': '🛡️' // API'den gelen "Yönetici" rozeti için
         };
 
         function showLoader() {
@@ -359,12 +368,14 @@
             console.error('Hata: userId veya guildId eksik');
         } else {
             showLoader();
-            console.log('API çağrısı yapılıyor:', `http://localhost:3000/api/user/${userId}/${guildId}`);
-            fetch(`http://localhost:3000/api/user/${userId}/${guildId}`)
+            console.log('API çağrısı yapılıyor:', `${API_BASE_URL}/user/${userId}/${guildId}`);
+            fetch(`${API_BASE_URL}/user/${userId}/${guildId}`)
                 .then(response => {
                     console.log('API yanıtı:', response);
                     if (!response.ok) {
-                        throw new Error(`API hatası: ${response.status} ${response.statusText}`);
+                        return response.json().then(errorData => {
+                            throw new Error(`API hatası: ${errorData.error || response.statusText}`);
+                        });
                     }
                     return response.json();
                 })
@@ -389,14 +400,22 @@
                     document.getElementById("createdDate").textContent = data.createdDate;
                     document.getElementById("badges").innerHTML = data.badges.length > 0
                         ? data.badges.map((badge, index) => {
-                            const icon = badgeIcons[badge] || '🔧'; // Varsayılan ikon
+                            const icon = badgeIcons[badge] || '❔'; // Bilinmeyen rozetler için varsayılan ikon
                             return `<span class="badge tooltip text-white p-2 rounded-full text-lg" style="animation-delay: ${index * 0.1}s" data-tooltip="${badge}">${icon}</span>`;
                         }).join("")
-                        : "";
+                        : "Yok"; // Rozet yoksa "Yok" yazsın
+                    
                     document.getElementById("roles").innerHTML = data.roles.length > 0
                         ? data.roles.map((role, index) => `<span class="role tooltip text-white px-3 py-1 rounded-full text-sm" style="background-color: ${role.color}; animation-delay: ${index * 0.1}s" data-tooltip="${role.name}">${role.name}</span>`).join("")
                         : "Yok";
-                    document.getElementById("boostingSince").textContent = data.boostingSince;
+                    
+                    // boostingSince null ise "Sunucuyu takviye etmiyor" yazdır ve ilgili satırı gizle
+                    if (data.boostingSince === null) {
+                        document.getElementById("boostingSince").parentElement.style.display = 'none'; 
+                    } else {
+                        document.getElementById("boostingSince").parentElement.style.display = 'block'; 
+                        document.getElementById("boostingSince").textContent = data.boostingSince;
+                    }
                     
                     document.getElementById("activities").innerHTML = data.activities.length > 0
                         ? data.activities.map(activity => {
@@ -405,13 +424,13 @@
                                 const statusText = activity.substring(prefix.length).trim();
                                 return `<div><span class="text-gray-300">${prefix}</span> <span class="text-white">${statusText}</span></div>`;
                             } else {
-                                return `<div class="text-white">🎮 ${activity}</div>`;
+                                return `<div class="text-white">${activity}</div>`; 
                             }
                         }).join("")
                         : "Yok";
                         
                     const statusIndicator = document.getElementById("status-indicator");
-                    statusIndicator.classList.remove("status-offline");
+                    statusIndicator.classList.remove("status-online", "status-offline", "status-idle", "status-dnd"); // Tüm sınıfları kaldır
                     statusIndicator.classList.add(`status-${data.status}`);
 
                     // Gönderen Sunucu Adını Güncelle
@@ -431,7 +450,7 @@
                 })
                 .catch(error => {
                     console.error('Hata:', error.message);
-                    showError(`Hata: ${error.message}. Lütfen sunucu ID'sini ve bağlantıyı kontrol edin.`);
+                    showError(`Hata: ${error.message}. Lütfen bağlantıyı kontrol edin veya botun yetkilerini gözden geçirin.`);
                 });
         }
     </script>
